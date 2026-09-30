@@ -141,6 +141,42 @@ export const ModesHub: React.FC<ModesHubProps> = ({
       isThinkInTeluguMode: true,
       hint: 'Mess + ekkada undi',
     },
+    {
+      id: 'tit_5',
+      situationOrHindi: 'You woke up feeling sick with a fever',
+      englishPrompt: 'Say: "I have a fever"',
+      expectedTelugu: 'Naaku jwaram vachindi',
+      acceptableVariations: ['naaku jwaram vachindi', 'naku jwaram vachindi'],
+      isThinkInTeluguMode: true,
+      hint: 'Naaku + jwaram + vachindi',
+    },
+    {
+      id: 'tit_6',
+      situationOrHindi: 'Politely asking permission to enter a professor’s office',
+      englishPrompt: 'Say: "May I come inside?"',
+      expectedTelugu: 'Nenu lopaliki raavachha',
+      acceptableVariations: ['nenu lopaliki ravachha', 'nenu lopaliki raavacha'],
+      isThinkInTeluguMode: true,
+      hint: 'Nenu + lopaliki + raavachha?',
+    },
+    {
+      id: 'tit_7',
+      situationOrHindi: 'Agreeing to go somewhere only if your friend comes too',
+      englishPrompt: 'Say: "If you come, I will come"',
+      expectedTelugu: 'Nuvvu vaste nenu vastanu',
+      acceptableVariations: ['nuvvu vaste nenu vastanu', 'nuvvu vasthe nenu vastanu'],
+      isThinkInTeluguMode: true,
+      hint: 'Nuvvu vaste + nenu vastanu',
+    },
+    {
+      id: 'tit_8',
+      situationOrHindi: 'Telling your stressed-out roommate to chill and take it easy',
+      englishPrompt: 'Say: "Take it easy bro"',
+      expectedTelugu: 'Lite theesuko mama',
+      acceptableVariations: ['lite theesuko mama', 'lite teesuko mama', 'lite theesuko macha'],
+      isThinkInTeluguMode: true,
+      hint: 'Lite theesuko + mama',
+    },
   ];
 
   const modesList = [
