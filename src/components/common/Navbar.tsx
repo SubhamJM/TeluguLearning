@@ -14,6 +14,9 @@ import {
   BarChart3,
   Sliders,
   Type,
+  Brain,
+  Bot,
+  Settings,
 } from 'lucide-react';
 import { UserStats } from '../../types';
 import { getLevelFromXp } from '../../engine/progressEngine';
@@ -27,6 +30,7 @@ export type ActiveTab =
   | 'conversations'
   | 'confusion'
   | 'playground'
+  | 'ai-arena'
   | 'analytics';
 
 interface NavbarProps {
@@ -39,6 +43,8 @@ interface NavbarProps {
   setSoundEnabled: (val: boolean) => void;
   showTeluguScript: boolean;
   setShowTeluguScript: (val: boolean) => void;
+  onOpenAiDrawer: () => void;
+  onOpenAiSettings: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -51,6 +57,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   setSoundEnabled,
   showTeluguScript,
   setShowTeluguScript,
+  onOpenAiDrawer,
+  onOpenAiSettings,
 }) => {
   const { level, currentLevelXp, nextLevelXp, progressPercent } = getLevelFromXp(stats.xp);
 
@@ -64,6 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   const navLinks: Array<{ id: ActiveTab; label: string; icon: React.ReactNode }> = [
     { id: 'dashboard', label: 'Dashboard', icon: <BookOpen className="w-4 h-4" /> },
     { id: 'curriculum', label: 'Curriculum', icon: <Layers className="w-4 h-4" /> },
+    { id: 'ai-arena', label: 'AI Arena', icon: <Brain className="w-4 h-4 text-emerald-500" /> },
     { id: 'patterns', label: 'Patterns', icon: <Sparkles className="w-4 h-4" /> },
     { id: 'modes', label: 'Practice Games', icon: <Gamepad2 className="w-4 h-4" /> },
     { id: 'confusion', label: 'Confusion Drills', icon: <GitCompare className="w-4 h-4" /> },
@@ -131,6 +140,16 @@ export const Navbar: React.FC<NavbarProps> = ({
               <div className="hidden lg:flex items-center space-x-1 bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800/60 px-2.5 py-1.5 rounded-xl text-xs font-semibold">
                 <span>⚡ {stats.xp} XP</span>
               </div>
+
+              {/* Ask AI Quick Trigger Button */}
+              <button
+                onClick={onOpenAiDrawer}
+                className="flex items-center space-x-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-xs shadow-xs transition-all active:scale-95"
+                title="Ask Telugu AI Assistant"
+              >
+                <Sparkles className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Ask AI</span>
+              </button>
 
               {/* Utility Toggles */}
               <div className="flex items-center space-x-0.5 sm:space-x-1 border-l border-slate-200 dark:border-slate-800 pl-1.5 sm:pl-2">
@@ -289,6 +308,34 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             <div className="grid grid-cols-2 gap-2.5">
+              <button
+                onClick={() => {
+                  setActiveTab('ai-arena');
+                  setShowMoreMenu(false);
+                }}
+                className={`p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all ${
+                  activeTab === 'ai-arena'
+                    ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-400 text-emerald-900 dark:text-emerald-200'
+                    : 'bg-slate-50 dark:bg-slate-800/70 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100'
+                }`}
+              >
+                <Brain className="w-5 h-5 text-emerald-500 mb-2" />
+                <div className="font-bold text-xs">AI Practice Arena</div>
+                <div className="text-[10px] text-slate-400">Weak words & tasks</div>
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowMoreMenu(false);
+                  onOpenAiDrawer();
+                }}
+                className="p-3.5 rounded-2xl border text-left flex flex-col justify-between transition-all bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200"
+              >
+                <Sparkles className="w-5 h-5 text-emerald-600 mb-2" />
+                <div className="font-bold text-xs">Ask Telugu AI</div>
+                <div className="text-[10px] text-emerald-600 dark:text-emerald-400">Instant lookup</div>
+              </button>
+
               <button
                 onClick={() => {
                   setActiveTab('patterns');

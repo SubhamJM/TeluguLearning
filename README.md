@@ -6,7 +6,7 @@
 [![React](https://img.shields.io/badge/React-18.3-61dafb.svg)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.1-646cff.svg)](https://vitejs.dev/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8.svg)](https://tailwindcss.com/)
-[![Tests](https://img.shields.io/badge/Tests-22%20Vitest%20Passed-brightgreen.svg)](https://vitest.dev/)
+[![Tests](https://img.shields.io/badge/Tests-28%20Vitest%20Passed-brightgreen.svg)](https://vitest.dev/)
 [![PWA](https://img.shields.io/badge/PWA-Mobile%20Ready-orange.svg)]()
 [![Offline](https://img.shields.io/badge/Local--First-100%25%20Offline-success.svg)]()
 
@@ -206,6 +206,42 @@ The app features a structured progression from absolute zero to spontaneous conv
 8. **Custom Playground Mode**:
    - Build your own decks (*"Hostel Slang"*, *"Lab Telugu"*, *"Difficult Verbs"*).
    - Instantly launches auto-generated Matching Games, Speed Rounds, and Sentence Builders using your custom cards.
+
+9. **Telugu AI Side Assistant (Instant Lookups)**:
+   - Floating trigger button and navbar quick access available on every screen.
+   - Ask how to say ANY word or sentence from Hindi or English.
+   - Ultra-concise response: Spoken Roman Telugu, Telugu script, Hindi concept bridge, word breakdown, 1 conversational example, voice playback, and 1-click "Save to Playground Deck".
+
+10. **Adaptive AI Practice Arena (LLM Training Ground)**:
+   - Tracks words and phrases the user has completed across all stages.
+   - **Scope Selection**:
+     - 🔴 **Weak Areas Only**: Automatically pulls words with low accuracy (<65%) or low mastery from the Spaced Repetition engine.
+     - 🟢 **All Completed Words**: Tests across the full vocabulary the student has learned.
+   - **Dynamic LLM Game Modes**:
+     - *Fill-in-the-Blank*: Contextual conversational sentences testing target words.
+     - *Mini Roleplay Dialogue*: Live simulated chat with an auto driver, roommate, canteen cook, or senior.
+     - *Sentence Challenge*: Translate realistic Hindi intents into natural Roman Telugu.
+   - Instant AI evaluation, score rewards, XP awards, and real-time SRS mastery updates that heal weak words!
+
+---
+
+## 🤖 LLM Model Recommendation (Gemini vs Qwen)
+
+The app includes native support for both **Google Gemini** and **OpenRouter / Qwen / Local Ollama**:
+
+| Feature / Criteria | **Google Gemini 2.0 Flash / Flash-Lite** ★ | **Qwen 2.5 / 3.6 (via OpenRouter / Ollama)** |
+| :--- | :--- | :--- |
+| **Recommendation** | **Top Choice (Recommended Primary)** | **Alternative (For Local / Open-Weights Enthusiasts)** |
+| **Pricing** | **100% Free** (15 RPM / 1,500 daily requests, no card required) | Depends on OpenRouter tier / Free local compute |
+| **Direct Browser CORS** | **Yes** (Client-side REST calls without backend proxy) | Requires API gateway or local Ollama proxy |
+| **Response Latency** | **Ultra-Fast** (~200ms–400ms) | Fast on Groq/OpenRouter; depends on hardware locally |
+| **Indic & Roman Telugu Quality** | **Exceptional** (Extensive pre-training on Indian languages & transliteration) | High general reasoning; good Telugu knowledge |
+
+### Recommended Setup:
+1. Get a free API key in 30 seconds from [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Click the **Gear icon (⚙️)** in the Telugu AI Assistant or the **"Add Key"** banner in the AI Arena.
+3. Paste your Gemini key and click **Save Settings**. (Everything is stored safely in your browser's local storage; no server ever sees your key).
+4. If you prefer Qwen or local models, select **OpenRouter** or **Custom** and enter your endpoint/model identifier.
 
 ---
 

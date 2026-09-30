@@ -31,6 +31,7 @@ interface DashboardProps {
   onDrillWeakWord: (wordId: string) => void;
   onOpenCurriculum: () => void;
   onOpenConversations: () => void;
+  onOpenAiArena?: () => void;
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({
@@ -42,6 +43,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   onDrillWeakWord,
   onOpenCurriculum,
   onOpenConversations,
+  onOpenAiArena,
 }) => {
   const { level, currentLevelXp, nextLevelXp, progressPercent } = getLevelFromXp(stats.xp);
 
@@ -246,7 +248,16 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 Words Needing Practice
               </h3>
             </div>
-            <span className="text-xs text-slate-400">Adaptive SRS Priority</span>
+            {onOpenAiArena && (
+              <button
+                onClick={onOpenAiArena}
+                className="flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 text-emerald-700 dark:text-emerald-300 font-bold text-xs border border-emerald-200 dark:border-emerald-800 transition-colors"
+                title="Practice weak words with AI"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+                <span>AI Practice</span>
+              </button>
+            )}
           </div>
 
           {topWeakWords.length === 0 ? (

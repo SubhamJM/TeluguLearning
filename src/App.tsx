@@ -12,11 +12,15 @@ import { AnalyticsView } from './components/analytics/AnalyticsView';
 import { LessonContainer } from './components/modes/LessonContainer';
 import { BadgeAlertModal } from './components/common/BadgeAlertModal';
 import { OnboardingModal } from './components/common/OnboardingModal';
+import { AiSideDrawer } from './components/ai/AiSideDrawer';
+import { AiSettingsModal } from './components/ai/AiSettingsModal';
+import { AiPlaygroundView } from './components/ai/AiPlaygroundView';
 import { CURRICULUM_STAGES } from './data/curriculum';
 import { VOCABULARY_DATA } from './data/vocabulary';
 import { PRACTICAL_SENTENCES } from './data/practicalSentences';
 import { CurriculumStage } from './types';
 import { selectAdaptiveItems } from './engine/spacedRepetition';
+import { Sparkles } from 'lucide-react';
 
 export const App: React.FC = () => {
   const {
@@ -49,6 +53,10 @@ export const App: React.FC = () => {
   const [showOnboarding, setShowOnboarding] = useState<boolean>(() => {
     return !localStorage.getItem('telugu_quest_onboarded') && stats.xp === 0;
   });
+
+  // AI Assistant Drawer & Settings Modal States
+  const [isAiDrawerOpen, setIsAiDrawerOpen] = useState<boolean>(false);
+  const [isAiSettingsOpen, setIsAiSettingsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     if (darkMode) {
@@ -121,6 +129,8 @@ export const App: React.FC = () => {
         setSoundEnabled={setSoundEnabled}
         showTeluguScript={showTeluguScript}
         setShowTeluguScript={setShowTeluguScript}
+        onOpenAiDrawer={() => setIsAiDrawerOpen(true)}
+        onOpenAiSettings={() => setIsAiSettingsOpen(true)}
       />
 
       {/* Main Content Body */}
@@ -160,6 +170,7 @@ export const App: React.FC = () => {
                 onDrillWeakWord={handleDrillWeakWord}
                 onOpenCurriculum={() => setActiveTab('curriculum')}
                 onOpenConversations={() => setActiveTab('conversations')}
+                onOpenAiArena={() => setActiveTab('ai-arena')}
               />
             )}
 
@@ -212,6 +223,16 @@ export const App: React.FC = () => {
               <PlaygroundView onAddXp={addXp} onRecordAttempt={recordAttempt} />
             )}
 
+            {activeTab === 'ai-arena' && (
+              <AiPlaygroundView
+                stats={stats}
+                progressMap={progressMap}
+                onAddXp={addXp}
+                onRecordAttempt={recordAttempt}
+                onOpenSettings={() => setIsAiSettingsOpen(true)}
+              />
+            )}
+
             {activeTab === 'analytics' && (
               <AnalyticsView
                 stats={stats}
@@ -225,6 +246,29 @@ export const App: React.FC = () => {
           </>
         )}
       </main>
+
+      {/* Floating "Ask AI" Trigger Button */}
+      <button
+        onClick={() => setIsAiDrawerOpen(true)}
+        className="fixed bottom-20 md:bottom-6 right-4 sm:right-6 z-40 px-3.5 sm:px-4 py-2.5 rounded-full bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-700 hover:to-teal-800 text-white font-extrabold text-xs sm:text-sm shadow-xl shadow-emerald-600/30 flex items-center space-x-2 transition-all active:scale-95 group border border-white/20"
+        title="Ask Telugu AI Assistant"
+      >
+        <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform text-amber-300" />
+        <span>Ask AI</span>
+      </button>
+
+      {/* AI Assistant Side Drawer */}
+      <AiSideDrawer
+        isOpen={isAiDrawerOpen}
+        onClose={() => setIsAiDrawerOpen(false)}
+        onOpenSettings={() => setIsAiSettingsOpen(true)}
+      />
+
+      {/* AI Settings / API Key Modal */}
+      <AiSettingsModal
+        isOpen={isAiSettingsOpen}
+        onClose={() => setIsAiSettingsOpen(false)}
+      />
 
       {/* Achievement Unlocked Pop-up Modal */}
       <BadgeAlertModal
