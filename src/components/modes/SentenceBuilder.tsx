@@ -31,7 +31,7 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
     setSelectedTokens([]);
     setIsEvaluated(false);
     setIsCorrect(false);
-  }, [sentence]);
+  }, [sentence.id]);
 
   const handlePickToken = (token: { id: string; text: string }) => {
     if (isEvaluated) return;

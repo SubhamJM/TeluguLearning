@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Volume2, RefreshCw, CheckCircle2, AlertCircle, Zap, ArrowRight, Flame } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Volume2, RefreshCw, CheckCircle2, AlertCircle, Zap, ArrowRight, Flame, XCircle } from 'lucide-react';
 import { MatchCard, createMatchingCards, computeXpForMatch } from '../../engine/matchingEngine';
 import { sound } from '../../engine/audioPlayer';
 import confetti from 'canvas-confetti';
 
-interface MatchingGameProps {
+export interface MatchingGameProps {
   items: Array<{ id: string; telugu: string; hindi: string; english?: string }>;
   title?: string;
   subtitle?: string;
   onComplete: (earnedXp: number, mistakes: number) => void;
   onRecordAttempt?: (itemId: string, isCorrect: boolean) => void;
+  onAddXp?: (amount: number) => void;
   showTeluguScript?: boolean;
 }
 
@@ -19,11 +20,13 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
   subtitle = 'Click a Telugu card and its corresponding Hindi bridge card',
   onComplete,
   onRecordAttempt,
+  onAddXp,
   showTeluguScript,
 }) => {
   const [cards, setCards] = useState<MatchCard[]>([]);
   const [selectedTelugu, setSelectedTelugu] = useState<MatchCard | null>(null);
   const [selectedHindi, setSelectedHindi] = useState<MatchCard | null>(null);
+  const [isEvaluating, setIsEvaluating] = useState<boolean>(false);
   const [combo, setCombo] = useState<number>(0);
   const [maxCombo, setMaxCombo] = useState<number>(0);
   const [earnedXp, setEarnedXp] = useState<number>(0);
@@ -32,14 +35,20 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
   const [feedback, setFeedback] = useState<{ isError: boolean; message: string } | null>(null);
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
+  // Derive stable items key so parent re-renders don't wipe game state
+  const itemsKey = useMemo(() => items.map((i) => i.id).join(','), [items]);
+  const prevItemsKeyRef = useRef<string>('');
+
   // Initialize or reset cards
   const initializeGame = () => {
     // Select up to 6 items per round for comfortable grid layout
-    const activeItems = items.slice(0, 6);
+    const pool = [...items];
+    const activeItems = pool.slice(0, 6);
     const newCards = createMatchingCards(activeItems);
     setCards(newCards);
     setSelectedTelugu(null);
     setSelectedHindi(null);
+    setIsEvaluating(false);
     setCombo(0);
     setMaxCombo(0);
     setEarnedXp(0);
@@ -50,11 +59,14 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
   };
 
   useEffect(() => {
-    initializeGame();
-  }, [items]);
+    if (prevItemsKeyRef.current !== itemsKey) {
+      prevItemsKeyRef.current = itemsKey;
+      initializeGame();
+    }
+  }, [itemsKey]);
 
   const handleCardClick = (card: MatchCard) => {
-    if (card.isMatched) return;
+    if (card.isMatched || isEvaluating) return;
 
     // Pronounce if Telugu card clicked
     if (card.type === 'telugu') {
@@ -62,20 +74,24 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
     }
 
     if (card.type === 'telugu') {
+      // Toggle off if already selected
       if (selectedTelugu?.id === card.id) {
         setSelectedTelugu(null);
         return;
       }
       setSelectedTelugu(card);
+      // If Hindi card is already selected, evaluate pair!
       if (selectedHindi) {
         evaluatePair(card, selectedHindi);
       }
     } else {
+      // Hindi card clicked
       if (selectedHindi?.id === card.id) {
         setSelectedHindi(null);
         return;
       }
       setSelectedHindi(card);
+      // If Telugu card is already selected, evaluate pair!
       if (selectedTelugu) {
         evaluatePair(selectedTelugu, card);
       }
@@ -88,6 +104,7 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
     const isFast = now - lastMatchTime < 3000;
     setLastMatchTime(now);
 
+    // Record SRS progress attempt
     if (onRecordAttempt) {
       onRecordAttempt(tCard.itemId, isCorrect);
     }
@@ -100,6 +117,9 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
 
       const { xp, comboBonus, speedBonus } = computeXpForMatch(isFast, nextCombo);
       setEarnedXp((prev) => prev + xp);
+      if (onAddXp) {
+        onAddXp(xp);
+      }
 
       let msg = `✓ Correct! ${tCard.text} = ${hCard.text}`;
       if (comboBonus > 0) msg += ` • 🔥 Combo x${nextCombo}! (+${comboBonus} XP)`;
@@ -107,16 +127,18 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
 
       setFeedback({ isError: false, message: msg });
 
-      // Mark matched
+      // Mark matched cards
       setCards((prev) =>
         prev.map((c) =>
-          c.id === tCard.id || c.id === hCard.id ? { ...c, isMatched: true, isSelected: false } : c
+          c.id === tCard.id || c.id === hCard.id
+            ? { ...c, isMatched: true, isSelected: false, isError: false }
+            : c
         )
       );
       setSelectedTelugu(null);
       setSelectedHindi(null);
 
-      // Check if all are matched
+      // Check if all cards in the round are matched
       const remainingUnmatched = cards.filter(
         (c) => !c.isMatched && c.id !== tCard.id && c.id !== hCard.id
       );
@@ -124,15 +146,20 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
       if (remainingUnmatched.length === 0) {
         setIsFinished(true);
         sound.playLevelUp();
-        confetti({ particleCount: 70, spread: 60 });
-        const finalXp = earnedXp + xp + 50; // Completion bonus
+        confetti({ particleCount: 80, spread: 70 });
+        const roundCompletionBonus = 50;
+        const finalXp = earnedXp + xp + roundCompletionBonus;
         setEarnedXp(finalXp);
+        if (onAddXp) {
+          onAddXp(roundCompletionBonus);
+        }
         onComplete(finalXp, mistakes);
       }
     } else {
       sound.playError();
       setCombo(0);
       setMistakes((prev) => prev + 1);
+      setIsEvaluating(true);
 
       // Flash cards with error
       setCards((prev) =>
@@ -141,7 +168,7 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
         )
       );
 
-      // Find correct meaning for tCard
+      // Find correct meanings for clarification
       const correctItem = items.find((i) => i.id === tCard.itemId);
       const wrongHindiItem = items.find((i) => i.id === hCard.itemId);
 
@@ -150,6 +177,7 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
         message: `Not quite! ${tCard.text} = ${correctItem?.hindi || '?'}. (${hCard.text} = ${wrongHindiItem?.telugu || '?'})`,
       });
 
+      // Clear error after 850ms and unfreeze clicks
       setTimeout(() => {
         setCards((prev) =>
           prev.map((c) =>
@@ -158,7 +186,8 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
         );
         setSelectedTelugu(null);
         setSelectedHindi(null);
-      }, 900);
+        setIsEvaluating(false);
+      }, 850);
     }
   };
 
@@ -191,7 +220,7 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
           <button
             onClick={initializeGame}
             title="Restart round"
-            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800"
+            className="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
           >
             <RefreshCw className="w-4 h-4" />
           </button>
@@ -227,7 +256,9 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
               <span className="text-xs uppercase font-extrabold tracking-wider text-emerald-700 dark:text-emerald-400">
                 Spoken Roman Telugu
               </span>
-              <span className="text-[11px] text-slate-400">Click to select</span>
+              <span className="text-[11px] text-slate-400">
+                {selectedTelugu ? 'Selected' : 'Click to select'}
+              </span>
             </div>
             <div className="space-y-2.5">
               {teluguCards.map((card) => {
@@ -235,31 +266,38 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
                 return (
                   <button
                     key={card.id}
-                    disabled={card.isMatched}
+                    disabled={card.isMatched || isEvaluating}
                     onClick={() => handleCardClick(card)}
                     className={`w-full p-4 rounded-xl font-bold text-left transition-all border flex items-center justify-between ${
                       card.isMatched
-                        ? 'opacity-30 bg-slate-100 dark:bg-slate-800/40 border-dashed border-slate-200 dark:border-slate-800 cursor-not-allowed line-through text-slate-400'
+                        ? 'bg-emerald-50/80 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 shadow-xs cursor-default'
                         : card.isError
                         ? 'bg-rose-50 dark:bg-rose-950/60 border-rose-500 text-rose-700 dark:text-rose-300 ring-2 ring-rose-400'
                         : isSelected
-                        ? 'bg-emerald-50 dark:bg-emerald-950/80 border-emerald-500 text-emerald-800 dark:text-emerald-200 ring-2 ring-emerald-500 shadow-sm'
-                        : 'bg-slate-50 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:border-emerald-300 hover:shadow-sm'
+                        ? 'bg-emerald-100 dark:bg-emerald-950 border-emerald-500 text-emerald-900 dark:text-emerald-100 ring-2 ring-emerald-500 shadow-md scale-[1.01]'
+                        : 'bg-slate-50 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:border-emerald-300 hover:shadow-xs'
                     }`}
                   >
                     <div className="flex items-center space-x-2">
                       <span className="text-base sm:text-lg">{card.text}</span>
                     </div>
 
-                    <div className="flex items-center space-x-2 text-slate-400">
-                      {!card.isMatched && (
+                    <div className="flex items-center space-x-2">
+                      {card.isMatched ? (
+                        <span className="flex items-center gap-1 text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-white/80 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span>Matched</span>
+                        </span>
+                      ) : card.isError ? (
+                        <XCircle className="w-4 h-4 text-rose-500" />
+                      ) : (
                         <button
                           type="button"
                           onClick={(e) => {
                             e.stopPropagation();
                             sound.speakTelugu(card.text);
                           }}
-                          className="p-1 hover:text-emerald-600 rounded-md transition-colors"
+                          className="p-1 hover:text-emerald-600 rounded-md transition-colors text-slate-400"
                         >
                           <Volume2 className="w-4 h-4" />
                         </button>
@@ -277,7 +315,9 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
               <span className="text-xs uppercase font-extrabold tracking-wider text-teal-700 dark:text-teal-400">
                 Hindi Bridge Concept
               </span>
-              <span className="text-[11px] text-slate-400">Click to pair</span>
+              <span className="text-[11px] text-slate-400">
+                {selectedHindi ? 'Selected' : 'Click to pair'}
+              </span>
             </div>
             <div className="space-y-2.5">
               {hindiCards.map((card) => {
@@ -285,20 +325,27 @@ export const MatchingGame: React.FC<MatchingGameProps> = ({
                 return (
                   <button
                     key={card.id}
-                    disabled={card.isMatched}
+                    disabled={card.isMatched || isEvaluating}
                     onClick={() => handleCardClick(card)}
                     className={`w-full p-4 rounded-xl font-bold text-left transition-all border flex items-center justify-between ${
                       card.isMatched
-                        ? 'opacity-30 bg-slate-100 dark:bg-slate-800/40 border-dashed border-slate-200 dark:border-slate-800 cursor-not-allowed line-through text-slate-400'
+                        ? 'bg-teal-50/80 dark:bg-teal-950/40 border-teal-300 dark:border-teal-800 text-teal-800 dark:text-teal-300 shadow-xs cursor-default'
                         : card.isError
                         ? 'bg-rose-50 dark:bg-rose-950/60 border-rose-500 text-rose-700 dark:text-rose-300 ring-2 ring-rose-400'
                         : isSelected
-                        ? 'bg-teal-50 dark:bg-teal-950/80 border-teal-500 text-teal-800 dark:text-teal-200 ring-2 ring-teal-500 shadow-sm'
-                        : 'bg-slate-50 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:border-teal-300 hover:shadow-sm'
+                        ? 'bg-teal-100 dark:bg-teal-950 border-teal-500 text-teal-900 dark:text-teal-100 ring-2 ring-teal-500 shadow-md scale-[1.01]'
+                        : 'bg-slate-50 dark:bg-slate-800/80 hover:bg-white dark:hover:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-800 dark:text-slate-100 hover:border-teal-300 hover:shadow-xs'
                     }`}
                   >
                     <span className="text-base sm:text-lg">{card.text}</span>
-                    {card.isMatched && <CheckCircle2 className="w-4 h-4 text-emerald-500" />}
+                    {card.isMatched ? (
+                      <span className="flex items-center gap-1 text-xs font-bold text-teal-600 dark:text-teal-400 bg-white/80 dark:bg-slate-800 px-2 py-0.5 rounded-md">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Matched</span>
+                      </span>
+                    ) : card.isError ? (
+                      <XCircle className="w-4 h-4 text-rose-500" />
+                    ) : null}
                   </button>
                 );
               })}

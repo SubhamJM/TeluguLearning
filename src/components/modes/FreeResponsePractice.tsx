@@ -41,7 +41,7 @@ export const FreeResponsePractice: React.FC<FreeResponsePracticeProps> = ({
     setTimeout(() => {
       inputRef.current?.focus();
     }, 100);
-  }, [currentIndex, currentItem]);
+  }, [currentIndex, currentItem?.id]);
 
   if (!currentItem) return null;
 

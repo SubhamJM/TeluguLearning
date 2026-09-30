@@ -145,6 +145,7 @@ export const PlaygroundView: React.FC<PlaygroundViewProps> = ({
               onComplete={(xp) => {
                 if (onAddXp) onAddXp(xp);
               }}
+              onAddXp={onAddXp}
               onRecordAttempt={onRecordAttempt}
             />
           )}

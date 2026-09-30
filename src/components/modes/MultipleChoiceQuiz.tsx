@@ -45,7 +45,7 @@ export const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({
     if (currentQ && currentQ.promptType === 'telugu') {
       sound.speakTelugu(currentQ.prompt);
     }
-  }, [currentIndex, currentQ]);
+  }, [currentIndex, currentQ?.id]);
 
   // Keyboard shortcuts 1, 2, 3, 4 and Enter
   useEffect(() => {

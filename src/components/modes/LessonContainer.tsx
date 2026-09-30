@@ -60,32 +60,36 @@ export const LessonContainer: React.FC<LessonContainerProps> = ({
     onCompleteLesson(finalXp);
   };
 
+  const vocabItemsForMatch = React.useMemo(() => vocabItems.slice(0, 6), [vocabItems]);
+
   // Convert vocab into MultipleChoice questions
-  const quizQuestions: QuizQuestion[] = vocabItems.slice(0, 5).map((target) => {
-    const distractors = vocabItems
-      .filter((v) => v.id !== target.id)
-      .slice(0, 3)
-      .map((d) => ({
-        id: `dist_${d.id}`,
-        text: d.hindi,
-        isCorrect: false,
-      }));
+  const quizQuestions: QuizQuestion[] = React.useMemo(() => {
+    return vocabItems.slice(0, 5).map((target) => {
+      const distractors = vocabItems
+        .filter((v) => v.id !== target.id)
+        .slice(0, 3)
+        .map((d) => ({
+          id: `dist_${d.id}`,
+          text: d.hindi,
+          isCorrect: false,
+        }));
 
-    const options = [
-      { id: `correct_${target.id}`, text: target.hindi, isCorrect: true },
-      ...distractors,
-    ].sort(() => Math.random() - 0.5);
+      const options = [
+        { id: `correct_${target.id}`, text: target.hindi, isCorrect: true },
+        ...distractors,
+      ].sort(() => Math.random() - 0.5);
 
-    return {
-      id: `q_${target.id}`,
-      prompt: target.telugu,
-      promptType: 'telugu',
-      correctAnswer: target.hindi,
-      correctAnswerId: target.id,
-      options,
-      explanation: `${target.telugu} maps directly to Hindi "${target.hindi}".`,
-    };
-  });
+      return {
+        id: `q_${target.id}`,
+        prompt: target.telugu,
+        promptType: 'telugu',
+        correctAnswer: target.hindi,
+        correctAnswerId: target.id,
+        options,
+        explanation: `${target.telugu} maps directly to Hindi "${target.hindi}".`,
+      };
+    });
+  }, [vocabItems]);
 
   return (
     <div className="max-w-2xl mx-auto space-y-6">
@@ -169,10 +173,11 @@ export const LessonContainer: React.FC<LessonContainerProps> = ({
       {/* STEP 1: MATCHING GAME */}
       {stepIndex === 1 && (
         <MatchingGame
-          items={vocabItems.slice(0, 6)}
+          items={vocabItemsForMatch}
           title="Card Match Practice"
           subtitle="Pair each Telugu token with its Hindi bridge equivalent"
           onComplete={(xp) => handleNextStep(xp)}
+          onAddXp={(xp) => setAccumulatedXp((prev) => prev + xp)}
           onRecordAttempt={onRecordAttempt}
           showTeluguScript={showTeluguScript}
         />

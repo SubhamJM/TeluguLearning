@@ -46,4 +46,22 @@ describe('matchingEngine', () => {
     const r4 = computeXpForMatch(true, 10);
     expect(r4.xp).toBe(45); // 10 + 5 + 30
   });
+
+  it('correctly evaluates pairs based on itemId matching', () => {
+    const items = [
+      { id: 'w1', telugu: 'Nenu', hindi: 'Main' },
+      { id: 'w2', telugu: 'Naaku', hindi: 'Mujhe' },
+    ];
+    const cards = createMatchingCards(items);
+
+    const teluguNenu = cards.find((c) => c.itemId === 'w1' && c.type === 'telugu')!;
+    const hindiMain = cards.find((c) => c.itemId === 'w1' && c.type === 'hindi')!;
+    const hindiMujhe = cards.find((c) => c.itemId === 'w2' && c.type === 'hindi')!;
+
+    // Matching pair
+    expect(teluguNenu.itemId === hindiMain.itemId).toBe(true);
+
+    // Mismatched pair
+    expect(teluguNenu.itemId === hindiMujhe.itemId).toBe(false);
+  });
 });

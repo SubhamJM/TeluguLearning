@@ -99,6 +99,10 @@ export const ModesHub: React.FC<ModesHubProps> = ({
     });
   };
 
+  const matchingVocab = React.useMemo(() => VOCABULARY_DATA.slice(0, 10), []);
+  const meaningQuestions = React.useMemo(() => generateMeaningQuestions(), []);
+  const teluguQuestions = React.useMemo(() => generateTeluguQuestions(), []);
+
   // Free response items for Think-in-Telugu
   const thinkInTeluguItems = [
     {
@@ -205,8 +209,9 @@ export const ModesHub: React.FC<ModesHubProps> = ({
 
           {activeGame === 'match' && (
             <MatchingGame
-              items={VOCABULARY_DATA.slice(0, 8)}
+              items={matchingVocab}
               onComplete={(xp) => onAddXp(xp)}
+              onAddXp={onAddXp}
               onRecordAttempt={onRecordAttempt}
               showTeluguScript={showTeluguScript}
             />
@@ -214,7 +219,7 @@ export const ModesHub: React.FC<ModesHubProps> = ({
 
           {activeGame === 'quiz_meaning' && (
             <MultipleChoiceQuiz
-              questions={generateMeaningQuestions()}
+              questions={meaningQuestions}
               title="Pick the Hindi Meaning"
               onComplete={(xp) => {
                 onAddXp(xp);
@@ -226,7 +231,7 @@ export const ModesHub: React.FC<ModesHubProps> = ({
 
           {activeGame === 'quiz_telugu' && (
             <MultipleChoiceQuiz
-              questions={generateTeluguQuestions()}
+              questions={teluguQuestions}
               title="Pick the Spoken Telugu"
               onComplete={(xp) => {
                 onAddXp(xp);
