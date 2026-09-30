@@ -255,7 +255,8 @@ TeluguLearning/
 │   └── _redirects               # SPA routing rewrite rules for Netlify
 ├── src/
 │   ├── types/
-│   │   └── index.ts             # TypeScript definitions (VocabularyItem, SentencePattern, etc.)
+│   │   ├── index.ts             # TypeScript definitions (VocabularyItem, SentencePattern, etc.)
+│   │   └── llm.ts               # LLM configurations, prompt contracts, and AI arena task types
 │   ├── data/
 │   │   ├── vocabulary.ts        # 190+ vocabulary entries mapped to Hindi bridges
 │   │   ├── sentencePatterns.ts  # 29 sentence pattern formulas & slot templates
@@ -268,7 +269,8 @@ TeluguLearning/
 │   │   ├── matchingEngine.ts    # Matching game pairing, combo multiplier & scoring logic
 │   │   ├── spacedRepetition.ts  # Spaced repetition engine (SRS urgency & mastery tracking)
 │   │   ├── progressEngine.ts    # Level thresholds, streaks, daily goals & achievements
-│   │   └── audioPlayer.ts       # Synthesizer (Web Audio API) + Web Speech API synthesis
+│   │   ├── audioPlayer.ts       # Synthesizer (Web Audio API) + Web Speech API synthesis
+│   │   └── llmService.ts        # Gemini REST & OpenRouter/Qwen API client with offline fallback
 │   ├── store/
 │   │   ├── userProgress.ts      # React hook managing localStorage sync for user stats & SRS
 │   │   └── playgroundStore.ts   # React hook managing custom decks & seed presets
@@ -295,6 +297,10 @@ TeluguLearning/
 │   │   │   └── LessonContainer.tsx # Structured step-by-step stage lesson flow
 │   │   ├── playground/
 │   │   │   └── PlaygroundView.tsx # Custom deck editor, manager & instant game launcher
+│   │   ├── ai/
+│   │   │   ├── AiSideDrawer.tsx # Slide-out instant Telugu lookup assistant
+│   │   │   ├── AiPlaygroundView.tsx # Adaptive AI practice arena for weak and completed words
+│   │   │   └── AiSettingsModal.tsx # API key & model configuration (Gemini / Qwen / Ollama)
 │   │   └── analytics/
 │   │       └── AnalyticsView.tsx # SRS analytics, weak/strong word rankings, JSON backup/restore
 │   ├── tests/
@@ -302,7 +308,8 @@ TeluguLearning/
 │   │   ├── matchingEngine.test.ts   # Tests for card pairing & combo multipliers
 │   │   ├── spacedRepetition.test.ts # Tests for mastery decay & SRS urgency scoring
 │   │   ├── progressEngine.test.ts   # Tests for XP curves, streaks & achievements
-│   │   └── playground.test.ts       # Tests for custom decks & seed persistence
+│   │   ├── playground.test.ts       # Tests for custom decks & seed persistence
+│   │   └── llmService.test.ts       # Tests for LLM config, offline fallback & task evaluation
 │   ├── App.tsx                  # Main application orchestrating tabs, modals & sound
 │   ├── main.tsx                 # React DOM mount point
 │   └── index.css                # Tailwind CSS styling, custom keyframes & scrollbars
@@ -512,6 +519,7 @@ npm test
 | **Spaced Repetition** | `src/tests/spacedRepetition.test.ts` | Item mastery progression, SRS urgency prioritization, and weak word extraction. |
 | **Progress Engine** | `src/tests/progressEngine.test.ts` | XP-to-level curves, daily streak logic, same-day preservation, and milestone achievement unlocks. |
 | **Playground Store** | `src/tests/playground.test.ts` | Custom user deck creation, mapping mutations, phrase additions, and seed dataset integrity. |
+| **LLM & AI Engine** | `src/tests/llmService.test.ts` | API configuration persistence, offline dictionary fallback, adaptive task generation, and fuzzy evaluation. |
 
 ---
 
