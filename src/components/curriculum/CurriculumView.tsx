@@ -110,7 +110,7 @@ export const CurriculumView: React.FC<CurriculumViewProps> = ({
                     <>
                       <button
                         onClick={() => onStartStageLesson(stage)}
-                        className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center space-x-2 shadow-sm shadow-emerald-600/20 transition-all"
+                        className="flex-1 sm:flex-initial justify-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center space-x-2 shadow-sm shadow-emerald-600/20 transition-all active:scale-95"
                       >
                         <Play className="w-4 h-4 fill-white" />
                         <span>{isCompleted ? 'Review Lesson' : 'Start Lesson'}</span>
@@ -119,22 +119,22 @@ export const CurriculumView: React.FC<CurriculumViewProps> = ({
                       {stage.conversationScenarioId && onOpenStageConversation && (
                         <button
                           onClick={() => onOpenStageConversation(stage.conversationScenarioId!)}
-                          className="px-3.5 py-2.5 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-bold text-xs rounded-xl border border-indigo-200 dark:border-indigo-800 flex items-center space-x-1.5 transition-all"
+                          className="px-3 py-2.5 bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-bold text-xs rounded-xl border border-indigo-200 dark:border-indigo-800 flex items-center space-x-1.5 transition-all active:scale-95"
                           title="Play conversational scenario"
                         >
                           <MessageSquare className="w-3.5 h-3.5" />
-                          <span className="hidden sm:inline">Scenario</span>
+                          <span className="text-[11px] sm:text-xs">Chat</span>
                         </button>
                       )}
 
                       {stage.confusionPairIds.length > 0 && onOpenConfusionDrill && (
                         <button
                           onClick={() => onOpenConfusionDrill(stage.confusionPairIds[0])}
-                          className="px-3.5 py-2.5 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-700 dark:text-amber-300 font-bold text-xs rounded-xl border border-amber-200 dark:border-amber-800 flex items-center space-x-1.5 transition-all"
+                          className="px-3 py-2.5 bg-amber-50 dark:bg-amber-950/60 hover:bg-amber-100 dark:hover:bg-amber-900/60 text-amber-700 dark:text-amber-300 font-bold text-xs rounded-xl border border-amber-200 dark:border-amber-800 flex items-center space-x-1.5 transition-all active:scale-95"
                           title="Practice confusion pairs"
                         >
                           <GitCompare className="w-3.5 h-3.5" />
-                          <span className="hidden sm:inline">Drills</span>
+                          <span className="text-[11px] sm:text-xs">Drills</span>
                         </button>
                       )}
                     </>

@@ -97,7 +97,7 @@ export const ConfusionDrill: React.FC<ConfusionDrillProps> = ({
       </div>
 
       {/* Main Confusion Drill Container */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 shadow-sm">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-8 shadow-sm">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-100 dark:border-slate-800">
           <div className="flex items-center space-x-2">
@@ -150,12 +150,12 @@ export const ConfusionDrill: React.FC<ConfusionDrillProps> = ({
         </div>
 
         {/* Binary Discrimination Buttons */}
-        <div className="grid grid-cols-2 gap-4 mb-6">
+        <div className="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
           {/* Choice A */}
           <button
             disabled={isAnswered}
             onClick={() => handleChoose('A')}
-            className={`p-5 rounded-2xl font-bold border-2 transition-all text-center flex flex-col items-center justify-center space-y-1 ${
+            className={`p-3.5 sm:p-5 rounded-2xl font-bold border-2 transition-all text-center flex flex-col items-center justify-center space-y-1 ${
               isAnswered
                 ? currentDrill.correctChoice === 'A'
                   ? 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-500 text-emerald-800 dark:text-emerald-200 ring-2 ring-emerald-400'
@@ -165,7 +165,7 @@ export const ConfusionDrill: React.FC<ConfusionDrillProps> = ({
                 : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/30 text-slate-900 dark:text-white active:scale-95 shadow-sm'
             }`}
           >
-            <span className="text-2xl font-extrabold">{activePair.teluguA}</span>
+            <span className="text-xl sm:text-2xl font-extrabold">{activePair.teluguA}</span>
             <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
               {activePair.hindiA}
             </span>
@@ -175,7 +175,7 @@ export const ConfusionDrill: React.FC<ConfusionDrillProps> = ({
           <button
             disabled={isAnswered}
             onClick={() => handleChoose('B')}
-            className={`p-5 rounded-2xl font-bold border-2 transition-all text-center flex flex-col items-center justify-center space-y-1 ${
+            className={`p-3.5 sm:p-5 rounded-2xl font-bold border-2 transition-all text-center flex flex-col items-center justify-center space-y-1 ${
               isAnswered
                 ? currentDrill.correctChoice === 'B'
                   ? 'bg-emerald-50 dark:bg-emerald-950/70 border-emerald-500 text-emerald-800 dark:text-emerald-200 ring-2 ring-emerald-400'
@@ -185,7 +185,7 @@ export const ConfusionDrill: React.FC<ConfusionDrillProps> = ({
                 : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/30 text-slate-900 dark:text-white active:scale-95 shadow-sm'
             }`}
           >
-            <span className="text-2xl font-extrabold">{activePair.teluguB}</span>
+            <span className="text-xl sm:text-2xl font-extrabold">{activePair.teluguB}</span>
             <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
               {activePair.hindiB}
             </span>

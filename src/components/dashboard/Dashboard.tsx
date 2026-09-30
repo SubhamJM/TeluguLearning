@@ -67,56 +67,56 @@ export const Dashboard: React.FC<DashboardProps> = ({
   const topStrongWords = getStrongestWordIds(progressMap, allVocabIds, 4);
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-4 sm:space-y-6">
       {/* Hero Welcome / Level Progress Banner */}
-      <div className="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden border border-emerald-900/60 shadow-xl">
+      <div className="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 rounded-2xl sm:rounded-3xl p-4 sm:p-8 text-white relative overflow-hidden border border-emerald-900/60 shadow-xl">
         <div className="absolute right-0 top-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2">
-            <div className="inline-flex items-center space-x-2 bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
+          <div className="space-y-1.5 sm:space-y-2">
+            <div className="inline-flex items-center space-x-1.5 sm:space-x-2 bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[10px] sm:text-xs font-bold uppercase tracking-wider">
               <span>TELUGU QUEST</span>
               <span>•</span>
               <span>HINDI BRIDGE</span>
             </div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
               Level {level} Explorer
             </h1>
-            <p className="text-slate-300 text-sm max-w-lg">
-              Translating Hindi concepts to conversational Telugu: <span className="font-bold text-emerald-400">Nenu → Main</span>, <span className="font-bold text-emerald-400">Naaku → Mujhe</span>, <span className="font-bold text-emerald-400">Nuvvu → Tum</span>.
+            <p className="text-slate-300 text-xs sm:text-sm max-w-lg">
+              Translating Hindi concepts to spoken Telugu: <span className="font-bold text-emerald-400">Nenu → Main</span>, <span className="font-bold text-emerald-400">Naaku → Mujhe</span>, <span className="font-bold text-emerald-400">Nuvvu → Tum</span>.
             </p>
           </div>
 
           {/* Quick Streak & XP Callout */}
-          <div className="flex items-center gap-4 bg-white/5 backdrop-blur-md p-4 rounded-2xl border border-white/10">
+          <div className="flex items-center justify-around sm:justify-start gap-3 sm:gap-4 bg-white/5 backdrop-blur-md p-3 sm:p-4 rounded-xl sm:rounded-2xl border border-white/10">
             <div className="flex items-center space-x-2">
-              <div className="w-12 h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center">
-                <Flame className="w-7 h-7 fill-orange-500 text-orange-500" />
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-orange-500/20 text-orange-400 flex items-center justify-center flex-shrink-0">
+                <Flame className="w-5 h-5 sm:w-7 sm:h-7 fill-orange-500 text-orange-500" />
               </div>
               <div>
-                <div className="text-2xl font-extrabold">{stats.currentStreak} Days</div>
-                <div className="text-xs text-slate-400 font-semibold">Active Streak</div>
+                <div className="text-lg sm:text-2xl font-extrabold">{stats.currentStreak} Days</div>
+                <div className="text-[10px] sm:text-xs text-slate-400 font-semibold">Active Streak</div>
               </div>
             </div>
 
-            <div className="h-10 w-px bg-white/10" />
+            <div className="h-8 sm:h-10 w-px bg-white/10" />
 
             <div>
-              <div className="text-2xl font-extrabold text-emerald-400">{stats.xp}</div>
-              <div className="text-xs text-slate-400 font-semibold">Total XP</div>
+              <div className="text-lg sm:text-2xl font-extrabold text-emerald-400">{stats.xp}</div>
+              <div className="text-[10px] sm:text-xs text-slate-400 font-semibold">Total XP</div>
             </div>
           </div>
         </div>
 
         {/* Level XP Progress Bar */}
-        <div className="relative z-10 mt-6 pt-5 border-t border-white/10">
-          <div className="flex items-center justify-between text-xs text-slate-300 mb-2 font-semibold">
+        <div className="relative z-10 mt-4 sm:mt-6 pt-3 sm:pt-5 border-t border-white/10">
+          <div className="flex items-center justify-between text-[11px] sm:text-xs text-slate-300 mb-1.5 sm:mb-2 font-semibold">
             <span>
               Level {level} Progress ({currentLevelXp} / {nextLevelXp} XP)
             </span>
-            <span>{progressPercent}% to Level {level + 1}</span>
+            <span>{progressPercent}% to Lvl {level + 1}</span>
           </div>
-          <div className="w-full bg-white/10 h-3 rounded-full overflow-hidden">
+          <div className="w-full bg-white/10 h-2 sm:h-3 rounded-full overflow-hidden">
             <div
               className="bg-gradient-to-r from-emerald-500 to-teal-400 h-full transition-all duration-700"
               style={{ width: `${progressPercent}%` }}
@@ -126,107 +126,107 @@ export const Dashboard: React.FC<DashboardProps> = ({
       </div>
 
       {/* Primary Action Buttons Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-4">
         {/* Continue Lesson CTA */}
         <button
           onClick={onContinueLearning}
-          className="p-5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-left transition-all shadow-md shadow-emerald-600/20 flex items-center justify-between group"
+          className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-left transition-all shadow-md shadow-emerald-600/20 flex items-center justify-between group active:scale-[0.99]"
         >
           <div>
-            <div className="text-xs text-emerald-200 uppercase font-extrabold tracking-wider">
+            <div className="text-[10px] sm:text-xs text-emerald-200 uppercase font-extrabold tracking-wider">
               Resume Journey
             </div>
-            <div className="text-lg font-extrabold mt-0.5">Continue Learning</div>
+            <div className="text-base sm:text-lg font-extrabold mt-0.5">Continue Learning</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-            <ArrowRight className="w-5 h-5 text-white" />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:translate-x-1 transition-transform flex-shrink-0">
+            <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
         </button>
 
         {/* Quick 5-Min Practice CTA */}
         <button
           onClick={onStartDailyPractice}
-          className="p-5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-left transition-all shadow-md shadow-amber-500/20 flex items-center justify-between group"
+          className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-left transition-all shadow-md shadow-amber-500/20 flex items-center justify-between group active:scale-[0.99]"
         >
           <div>
-            <div className="text-xs text-amber-100 uppercase font-extrabold tracking-wider">
+            <div className="text-[10px] sm:text-xs text-amber-100 uppercase font-extrabold tracking-wider">
               Today's Session
             </div>
-            <div className="text-lg font-extrabold mt-0.5">Daily 5-Min Drill</div>
+            <div className="text-base sm:text-lg font-extrabold mt-0.5">Daily 5-Min Drill</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-105 transition-transform">
-            <Clock className="w-5 h-5 text-white" />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-105 transition-transform flex-shrink-0">
+            <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
         </button>
 
         {/* Playground CTA */}
         <button
           onClick={onOpenPlayground}
-          className="p-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-left transition-all shadow-md shadow-indigo-600/20 flex items-center justify-between group"
+          className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-left transition-all shadow-md shadow-indigo-600/20 flex items-center justify-between group active:scale-[0.99]"
         >
           <div>
-            <div className="text-xs text-indigo-200 uppercase font-extrabold tracking-wider">
+            <div className="text-[10px] sm:text-xs text-indigo-200 uppercase font-extrabold tracking-wider">
               Custom Mappings
             </div>
-            <div className="text-lg font-extrabold mt-0.5">Open Playground</div>
+            <div className="text-base sm:text-lg font-extrabold mt-0.5">Open Playground</div>
           </div>
-          <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-105 transition-transform">
-            <Sliders className="w-5 h-5 text-white" />
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white/20 flex items-center justify-center group-hover:scale-105 transition-transform flex-shrink-0">
+            <Sliders className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
           </div>
         </button>
       </div>
 
-      {/* Core Metrics & Today's Goal Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      {/* Core Metrics & Today's Goal Grid (2x2 on mobile, 4 columns on desktop) */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
         {/* Metric 1 */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+        <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5 sm:mb-1 truncate">
             Words Mastered
           </div>
-          <div className="text-3xl font-extrabold text-slate-900 dark:text-white">
+          <div className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
             {wordsMastered}
           </div>
-          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            of {VOCABULARY_DATA.length} core vocabulary words
+          <div className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1 truncate">
+            of {VOCABULARY_DATA.length} core words
           </div>
         </div>
 
         {/* Metric 2 */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+        <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5 sm:mb-1 truncate">
             Sentences Mastered
           </div>
-          <div className="text-3xl font-extrabold text-slate-900 dark:text-white">
+          <div className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
             {sentencesMastered}
           </div>
-          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            of {PRACTICAL_SENTENCES.length} practical phrases
+          <div className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1 truncate">
+            of {PRACTICAL_SENTENCES.length} phrases
           </div>
         </div>
 
         {/* Metric 3 */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
-          <div className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
+        <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5 sm:mb-1 truncate">
             Accuracy Rate
           </div>
-          <div className="text-3xl font-extrabold text-slate-900 dark:text-white">
+          <div className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
             {accuracy}%
           </div>
-          <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-            across {stats.totalAnswers} total exercises
+          <div className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1 truncate">
+            {stats.totalAnswers} total drills
           </div>
         </div>
 
         {/* Metric 4: Daily Goal */}
-        <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
-          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">
-            <span>Today's Goal</span>
-            <span className="text-emerald-600 dark:text-emerald-400">{dailyGoalPercent}%</span>
+        <div className="bg-white dark:bg-slate-900 rounded-xl sm:rounded-2xl p-3.5 sm:p-5 border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div className="flex items-center justify-between text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 mb-0.5 sm:mb-1">
+            <span className="truncate">Today's Goal</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-extrabold">{dailyGoalPercent}%</span>
           </div>
-          <div className="text-3xl font-extrabold text-slate-900 dark:text-white">
-            {stats.todayXp} / {stats.dailyGoalXp} <span className="text-sm font-normal text-slate-400">XP</span>
+          <div className="text-xl sm:text-3xl font-extrabold text-slate-900 dark:text-white truncate">
+            {stats.todayXp} <span className="text-xs font-normal text-slate-400">/ {stats.dailyGoalXp} XP</span>
           </div>
-          <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden mt-2">
+          <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 sm:h-2 rounded-full overflow-hidden mt-1.5 sm:mt-2">
             <div
               className="bg-emerald-500 h-full transition-all duration-500"
               style={{ width: `${dailyGoalPercent}%` }}

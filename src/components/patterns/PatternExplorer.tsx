@@ -39,9 +39,27 @@ export const PatternExplorer: React.FC<PatternExplorerProps> = ({
         </p>
       </div>
 
+      {/* Mobile Pattern Dropdown */}
+      <div className="lg:hidden bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+          Select Reusable Pattern
+        </label>
+        <select
+          value={selectedPatternId}
+          onChange={(e) => setSelectedPatternId(e.target.value)}
+          className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2.5 text-sm font-bold text-slate-800 dark:text-slate-200 shadow-xs focus:ring-2 focus:ring-emerald-500 focus:outline-none"
+        >
+          {SENTENCE_PATTERNS.map((p) => (
+            <option key={p.id} value={p.id}>
+              {p.pattern} ({p.hindiPattern})
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Column: Pattern Selector List */}
-        <div className="lg:col-span-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3 sm:p-4 h-fit max-h-[550px] overflow-y-auto no-scrollbar shadow-xs">
+        {/* Left Column: Pattern Selector List (Visible on Large Screens) */}
+        <div className="hidden lg:block lg:col-span-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3 sm:p-4 h-fit max-h-[550px] overflow-y-auto no-scrollbar shadow-xs">
           <span className="text-[11px] font-extrabold uppercase tracking-wider text-slate-400 px-3 py-1 block">
             Core Patterns ({SENTENCE_PATTERNS.length})
           </span>

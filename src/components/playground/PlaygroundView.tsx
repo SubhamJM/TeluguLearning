@@ -59,6 +59,7 @@ export const PlaygroundView: React.FC<PlaygroundViewProps> = ({
 
   // Active game mode state
   const [activeGameMode, setActiveGameMode] = useState<PlaygroundGameMode>(null);
+  const [mobileTab, setMobileTab] = useState<'editor' | 'sets'>('editor');
 
   const handleCreateSet = (e: React.FormEvent) => {
     e.preventDefault();
@@ -196,111 +197,139 @@ export const PlaygroundView: React.FC<PlaygroundViewProps> = ({
 
       {/* Editor & Manager View */}
       {activeGameMode === null && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-          {/* Left Column: Sets List */}
-          <div className="lg:col-span-4 space-y-4">
-            <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xs">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-xs uppercase font-extrabold tracking-wider text-slate-400">
-                  Your Sets ({sets.length})
-                </span>
-                <button
-                  onClick={() => setIsCreatingSet(!isCreatingSet)}
-                  className="p-1 rounded-lg text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/60"
-                  title="Create new set"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-
-              {/* New Set Input */}
-              {isCreatingSet && (
-                <form onSubmit={handleCreateSet} className="mb-3 space-y-2 animate-pop">
-                  <input
-                    type="text"
-                    value={newSetName}
-                    onChange={(e) => setNewSetName(e.target.value)}
-                    placeholder="Set name (e.g. Canteen Telugu)..."
-                    className="w-full px-3 py-2 text-xs font-semibold rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
-                  />
-                  <div className="flex space-x-2">
-                    <button
-                      type="submit"
-                      disabled={!newSetName.trim()}
-                      className="px-3 py-1 bg-emerald-600 text-white rounded-md text-xs font-bold"
-                    >
-                      Save Set
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setIsCreatingSet(false)}
-                      className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-md text-xs"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              {/* Sets List */}
-              <div className="space-y-1.5 max-h-[380px] overflow-y-auto no-scrollbar">
-                {sets.map((set) => {
-                  const isSelected = set.id === activeSet?.id;
-                  return (
-                    <div
-                      key={set.id}
-                      onClick={() => setActiveSetId(set.id)}
-                      className={`p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between ${
-                        isSelected
-                          ? 'bg-indigo-50 dark:bg-indigo-950/70 border border-indigo-300 dark:border-indigo-800 text-indigo-900 dark:text-indigo-200'
-                          : 'hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
-                      }`}
-                    >
-                      <div>
-                        <div className="font-bold text-sm">{set.name}</div>
-                        <div className="text-xs text-slate-400">
-                          {set.mappings.length} words • {set.phrases.length} phrases
-                        </div>
-                      </div>
-
-                      {sets.length > 1 && (
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            deleteSet(set.id);
-                          }}
-                          className="p-1 text-slate-300 hover:text-rose-500 rounded-md"
-                          title="Delete set"
-                        >
-                          <Trash2 className="w-3.5 h-3.5" />
-                        </button>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 mt-3 text-center">
-                <button
-                  onClick={resetToSeedSets}
-                  className="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 underline"
-                >
-                  Reset pre-made seed sets
-                </button>
-              </div>
-            </div>
+        <div className="space-y-4">
+          {/* Mobile view switcher for screens < lg */}
+          <div className="lg:hidden flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl text-xs font-bold border border-slate-200 dark:border-slate-700">
+            <button
+              onClick={() => setMobileTab('editor')}
+              className={`flex-1 py-2 rounded-lg transition-all text-center ${
+                mobileTab === 'editor'
+                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              Active Deck: {activeSet?.name || 'Editor'}
+            </button>
+            <button
+              onClick={() => setMobileTab('sets')}
+              className={`flex-1 py-2 rounded-lg transition-all text-center ${
+                mobileTab === 'sets'
+                  ? 'bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              All Decks ({sets.length})
+            </button>
           </div>
 
-          {/* Right Column: Active Set Editor & Game Launcher */}
-          {activeSet && (
-            <div className="lg:col-span-8 space-y-6">
-              {/* Game Generator Launcher Card */}
-              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800 gap-2">
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                      {activeSet.name}
-                    </h3>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Left Column: Sets List */}
+            <div className={`lg:col-span-4 space-y-4 ${mobileTab === 'sets' ? 'block' : 'hidden lg:block'}`}>
+              <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 shadow-xs">
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-xs uppercase font-extrabold tracking-wider text-slate-400">
+                    Your Sets ({sets.length})
+                  </span>
+                  <button
+                    onClick={() => setIsCreatingSet(!isCreatingSet)}
+                    className="p-1 rounded-lg text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-950/60"
+                    title="Create new set"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </button>
+                </div>
+
+                {/* New Set Input */}
+                {isCreatingSet && (
+                  <form onSubmit={handleCreateSet} className="mb-3 space-y-2 animate-pop">
+                    <input
+                      type="text"
+                      value={newSetName}
+                      onChange={(e) => setNewSetName(e.target.value)}
+                      placeholder="Set name (e.g. Canteen Telugu)..."
+                      className="w-full px-3 py-2 text-xs font-semibold rounded-lg border border-slate-300 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white"
+                    />
+                    <div className="flex space-x-2">
+                      <button
+                        type="submit"
+                        disabled={!newSetName.trim()}
+                        className="px-3 py-1 bg-emerald-600 text-white rounded-md text-xs font-bold"
+                      >
+                        Save Set
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setIsCreatingSet(false)}
+                        className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 rounded-md text-xs"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </form>
+                )}
+
+                {/* Sets List */}
+                <div className="space-y-1.5 max-h-[380px] overflow-y-auto no-scrollbar">
+                  {sets.map((set) => {
+                    const isSelected = set.id === activeSet?.id;
+                    return (
+                      <div
+                        key={set.id}
+                        onClick={() => {
+                          setActiveSetId(set.id);
+                          setMobileTab('editor');
+                        }}
+                        className={`p-3 rounded-xl cursor-pointer transition-all flex items-center justify-between ${
+                          isSelected
+                            ? 'bg-indigo-50 dark:bg-indigo-950/70 border border-indigo-300 dark:border-indigo-800 text-indigo-900 dark:text-indigo-200'
+                            : 'hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
+                        }`}
+                      >
+                        <div>
+                          <div className="font-bold text-sm">{set.name}</div>
+                          <div className="text-xs text-slate-400">
+                            {set.mappings.length} words • {set.phrases.length} phrases
+                          </div>
+                        </div>
+
+                        {sets.length > 1 && (
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteSet(set.id);
+                            }}
+                            className="p-1 text-slate-300 hover:text-rose-500 rounded-md"
+                            title="Delete set"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 mt-3 text-center">
+                  <button
+                    onClick={resetToSeedSets}
+                    className="text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 underline"
+                  >
+                    Reset pre-made seed sets
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Active Set Editor & Game Launcher */}
+            {activeSet && (
+              <div className={`lg:col-span-8 space-y-6 ${mobileTab === 'editor' ? 'block' : 'hidden lg:block'}`}>
+                {/* Game Generator Launcher Card */}
+                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-sm">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 mb-4 border-b border-slate-100 dark:border-slate-800 gap-2">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+                        {activeSet.name}
+                      </h3>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       {activeSet.description || 'Custom user vocabulary set'}
                     </p>
@@ -477,7 +506,8 @@ export const PlaygroundView: React.FC<PlaygroundViewProps> = ({
             </div>
           )}
         </div>
-      )}
-    </div>
-  );
+      </div>
+    )}
+  </div>
+);
 };

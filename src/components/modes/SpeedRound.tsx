@@ -115,12 +115,12 @@ export const SpeedRound: React.FC<SpeedRoundProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 max-w-xl mx-auto shadow-sm">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-8 max-w-xl mx-auto shadow-sm">
       {/* Top Header Status */}
-      <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-100 dark:border-slate-800">
+      <div className="flex items-center justify-between pb-3 sm:pb-4 mb-4 sm:mb-6 border-b border-slate-100 dark:border-slate-800">
         <div className="flex items-center space-x-2">
           <div
-            className={`p-2 rounded-xl flex items-center gap-1 font-bold text-sm ${
+            className={`p-1.5 sm:p-2 rounded-xl flex items-center gap-1 font-bold text-xs sm:text-sm ${
               timeLeft <= 10
                 ? 'bg-rose-50 text-rose-600 animate-pulse'
                 : 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600'
@@ -131,18 +131,18 @@ export const SpeedRound: React.FC<SpeedRoundProps> = ({
           </div>
 
           {currentStreak >= 3 && (
-            <span className="flex items-center gap-1 text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-2 py-1 rounded-lg">
+            <span className="flex items-center gap-1 text-[11px] sm:text-xs font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/40 px-2 py-1 rounded-lg">
               <Flame className="w-3.5 h-3.5 fill-orange-500 text-orange-500" />
               <span>{currentStreak} Streak</span>
             </span>
           )}
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2 sm:space-x-3">
           <div className="text-xs font-bold text-slate-500 dark:text-slate-400">
             Score: <span className="text-slate-900 dark:text-white font-extrabold text-sm">{score}</span>
           </div>
-          <div className="flex items-center space-x-1 text-xs font-bold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 px-2.5 py-1 rounded-lg border border-indigo-200 dark:border-indigo-800/60">
+          <div className="flex items-center space-x-1 text-xs font-bold bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 px-2 sm:px-2.5 py-1 rounded-lg border border-indigo-200 dark:border-indigo-800/60">
             <Zap className="w-3.5 h-3.5" />
             <span>+{earnedXp} XP</span>
           </div>
@@ -150,19 +150,19 @@ export const SpeedRound: React.FC<SpeedRoundProps> = ({
       </div>
 
       {!isActive && !isGameOver && (
-        <div className="text-center py-10">
-          <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center mx-auto mb-4">
-            <Timer className="w-8 h-8" />
+        <div className="text-center py-6 sm:py-10">
+          <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+            <Timer className="w-7 h-7 sm:w-8 sm:h-8" />
           </div>
-          <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mb-1 sm:mb-2">
             Speed Round Challenge
           </h3>
-          <p className="text-slate-600 dark:text-slate-300 text-sm max-w-sm mx-auto mb-6">
+          <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm max-w-sm mx-auto mb-4 sm:mb-6">
             Answer as many Telugu ↔ Hindi translations as you can in {durationSeconds} seconds!
           </p>
           <button
             onClick={startRound}
-            className="px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition-all text-base"
+            className="w-full sm:w-auto px-8 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition-all text-sm sm:text-base active:scale-95"
           >
             Start {durationSeconds}s Speed Round
           </button>
@@ -170,22 +170,22 @@ export const SpeedRound: React.FC<SpeedRoundProps> = ({
       )}
 
       {isActive && currentPrompt && (
-        <div className="space-y-6 animate-pop">
-          <div className="bg-slate-50 dark:bg-slate-800/60 p-6 rounded-2xl text-center border border-slate-200/60 dark:border-slate-700/60">
-            <span className="text-xs uppercase font-extrabold tracking-wider text-slate-400 block mb-1">
+        <div className="space-y-4 sm:space-y-6 animate-pop">
+          <div className="bg-slate-50 dark:bg-slate-800/60 p-4 sm:p-6 rounded-2xl text-center border border-slate-200/60 dark:border-slate-700/60">
+            <span className="text-[10px] sm:text-xs uppercase font-extrabold tracking-wider text-slate-400 block mb-1">
               {currentPrompt.isTeluguPrompt ? 'Telugu Word' : 'Hindi Meaning'}
             </span>
-            <div className="text-3xl font-extrabold text-slate-900 dark:text-white">
+            <div className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
               {currentPrompt.isTeluguPrompt ? currentPrompt.telugu : currentPrompt.hindi}
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2 sm:gap-3">
             {currentPrompt.options.map((option, idx) => (
               <button
                 key={idx}
                 onClick={() => handleOptionClick(option)}
-                className="p-4 rounded-xl font-bold text-base bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-slate-700 active:scale-95 transition-all text-slate-800 dark:text-slate-100 shadow-xs"
+                className="p-3 sm:p-4 rounded-xl font-bold text-xs sm:text-base bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-emerald-400 hover:bg-emerald-50/50 dark:hover:bg-slate-700 active:scale-95 transition-all text-slate-800 dark:text-slate-100 shadow-xs"
               >
                 {option}
               </button>

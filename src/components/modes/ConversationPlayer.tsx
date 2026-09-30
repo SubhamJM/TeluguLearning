@@ -159,49 +159,49 @@ export const ConversationPlayer: React.FC<ConversationPlayerProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 max-w-2xl mx-auto shadow-sm">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-3.5 sm:p-7 max-w-2xl mx-auto shadow-sm">
       {/* Scenario Header */}
-      <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100 dark:border-slate-800">
-        <div className="flex items-center space-x-3">
-          <span className="text-3xl">{scenario.avatar}</span>
-          <div>
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white">
+      <div className="flex items-center justify-between pb-3 sm:pb-4 mb-3 sm:mb-4 border-b border-slate-100 dark:border-slate-800">
+        <div className="flex items-center space-x-2.5 sm:space-x-3 min-w-0">
+          <span className="text-2xl sm:text-3xl flex-shrink-0">{scenario.avatar}</span>
+          <div className="min-w-0">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white truncate">
               {scenario.title}
             </h2>
-            <div className="flex items-center space-x-2 text-xs text-slate-500 dark:text-slate-400">
-              <span>{scenario.hindiTitle}</span>
+            <div className="flex items-center space-x-1.5 sm:space-x-2 text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 truncate">
+              <span className="truncate">{scenario.hindiTitle}</span>
               <span>•</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md font-medium">
+              <span className="bg-slate-100 dark:bg-slate-800 px-1.5 sm:px-2 py-0.5 rounded-md font-medium truncate">
                 {scenario.location}
               </span>
             </div>
           </div>
         </div>
 
-        <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800/60">
+        <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 sm:px-2.5 py-1 rounded-lg border border-emerald-200 dark:border-emerald-800/60 flex-shrink-0 ml-2">
           +{earnedXp} XP
         </div>
       </div>
 
       {/* Dialog History Stream */}
-      <div className="space-y-4 mb-6 max-h-[380px] overflow-y-auto pr-2 no-scrollbar">
+      <div className="space-y-3.5 mb-4 sm:mb-6 max-h-[360px] sm:max-h-[420px] overflow-y-auto pr-1 sm:pr-2 no-scrollbar">
         {scenario.steps.slice(0, currentStepIndex + (currentStep?.speaker === 'npc' ? 1 : 0)).map((step, idx) => {
           const isNpc = step.speaker === 'npc';
           return (
             <div
               key={step.id}
-              className={`flex items-start gap-2.5 animate-pop ${
+              className={`flex items-start gap-2 sm:gap-2.5 animate-pop ${
                 isNpc ? 'justify-start' : 'justify-end'
               }`}
             >
               {isNpc && (
-                <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-sm flex-shrink-0">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-xs sm:text-sm flex-shrink-0">
                   {scenario.avatar}
                 </div>
               )}
 
               <div
-                className={`max-w-[85%] rounded-2xl p-4 shadow-xs ${
+                className={`max-w-[90%] sm:max-w-[85%] rounded-2xl p-3 sm:p-4 shadow-xs ${
                   isNpc
                     ? 'bg-slate-50 dark:bg-slate-800/90 text-slate-900 dark:text-white border border-slate-200/80 dark:border-slate-700/80 rounded-tl-xs'
                     : 'bg-emerald-600 text-white rounded-tr-xs'

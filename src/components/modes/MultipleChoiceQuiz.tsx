@@ -107,18 +107,18 @@ export const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({
   const progressPercent = Math.round(((currentIndex + 1) / questions.length) * 100);
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 max-w-xl mx-auto shadow-sm">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-8 max-w-xl mx-auto shadow-sm">
       {/* Progress & Title */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-          <span className="font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+      <div className="mb-4 sm:mb-6">
+        <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5 sm:mb-2">
+          <span className="font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 truncate">
             {title}
           </span>
-          <span className="font-semibold">
+          <span className="font-semibold flex-shrink-0 ml-2">
             {currentIndex + 1} / {questions.length}
           </span>
         </div>
-        <div className="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+        <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 sm:h-2 rounded-full overflow-hidden">
           <div
             className="bg-emerald-500 h-full transition-all duration-300"
             style={{ width: `${progressPercent}%` }}
@@ -127,12 +127,12 @@ export const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({
       </div>
 
       {/* Prompt Card */}
-      <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-6 text-center border border-slate-200/60 dark:border-slate-700/60 mb-6">
-        <span className="text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-1 block">
+      <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-4 sm:p-6 text-center border border-slate-200/60 dark:border-slate-700/60 mb-4 sm:mb-6">
+        <span className="text-[10px] sm:text-xs uppercase font-extrabold tracking-wider text-slate-400 mb-1 block">
           {currentQ.promptType === 'telugu' ? 'Roman Telugu Word' : 'Hindi Meaning'}
         </span>
-        <div className="flex items-center justify-center space-x-2 my-2">
-          <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white">
+        <div className="flex items-center justify-center space-x-2 my-1.5 sm:my-2">
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
             {currentQ.prompt}
           </h2>
           {currentQ.promptType === 'telugu' && (
@@ -141,7 +141,7 @@ export const MultipleChoiceQuiz: React.FC<MultipleChoiceQuizProps> = ({
               className="p-1.5 text-slate-400 hover:text-emerald-600 rounded-full"
               title="Pronounce"
             >
-              <Volume2 className="w-5 h-5" />
+              <Volume2 className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           )}
         </div>

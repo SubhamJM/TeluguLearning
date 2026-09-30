@@ -76,27 +76,27 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 max-w-xl mx-auto shadow-sm">
-      <div className="text-center mb-6">
-        <span className="text-xs uppercase font-extrabold tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-8 max-w-xl mx-auto shadow-sm">
+      <div className="text-center mb-4 sm:mb-6">
+        <span className="text-[10px] sm:text-xs uppercase font-extrabold tracking-wider text-emerald-600 dark:text-emerald-400 block mb-1">
           Build the Telugu Sentence
         </span>
-        <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+        <h3 className="text-lg sm:text-2xl font-bold text-slate-900 dark:text-white">
           "{sentence.hindi}"
         </h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+        <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1">
           {sentence.english}
         </p>
       </div>
 
       {/* Assembly Area */}
-      <div className="mb-6">
+      <div className="mb-4 sm:mb-6">
         <div className="flex items-center justify-between text-xs text-slate-400 mb-2">
           <span>Your Telugu sentence:</span>
           {selectedTokens.length > 0 && !isEvaluated && (
             <button
               onClick={handleReset}
-              className="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 flex items-center gap-1 font-semibold"
+              className="text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 flex items-center gap-1 font-semibold text-xs"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Clear</span>
@@ -105,7 +105,7 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
         </div>
 
         <div
-          className={`min-h-[72px] p-3 rounded-2xl border-2 flex flex-wrap gap-2 items-center transition-all ${
+          className={`min-h-[64px] sm:min-h-[72px] p-2.5 sm:p-3 rounded-2xl border-2 flex flex-wrap gap-1.5 sm:gap-2 items-center transition-all ${
             isEvaluated
               ? isCorrect
                 ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-500'
@@ -116,7 +116,7 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
           }`}
         >
           {selectedTokens.length === 0 ? (
-            <span className="text-sm text-slate-400 italic mx-auto">
+            <span className="text-xs sm:text-sm text-slate-400 italic mx-auto text-center">
               Tap the word chips below to place them in order
             </span>
           ) : (
@@ -125,7 +125,7 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
                 key={token.id}
                 disabled={isEvaluated}
                 onClick={() => handleRemoveToken(token)}
-                className="px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-sm shadow-sm border border-slate-200 dark:border-slate-700 hover:border-rose-400 transition-transform active:scale-95"
+                className="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-bold text-xs sm:text-sm shadow-xs border border-slate-200 dark:border-slate-700 hover:border-rose-400 transition-transform active:scale-95"
               >
                 {token.text}
               </button>
@@ -135,15 +135,15 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
       </div>
 
       {/* Available Word Chips Pool */}
-      <div className="mb-6">
-        <div className="text-xs text-slate-400 mb-2">Available word chips:</div>
-        <div className="flex flex-wrap gap-2 min-h-[50px]">
+      <div className="mb-4 sm:mb-6">
+        <div className="text-[11px] sm:text-xs text-slate-400 mb-1.5 sm:mb-2">Available word chips:</div>
+        <div className="flex flex-wrap gap-1.5 sm:gap-2 min-h-[44px]">
           {poolTokens.map((token) => (
             <button
               key={token.id}
               disabled={isEvaluated}
               onClick={() => handlePickToken(token)}
-              className="px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-sm border border-slate-200/80 dark:border-slate-700 hover:bg-emerald-50 hover:border-emerald-400 hover:text-emerald-800 dark:hover:bg-slate-700 transition-all active:scale-95 shadow-xs"
+              className="px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs sm:text-sm border border-slate-200/80 dark:border-slate-700 hover:bg-emerald-50 hover:border-emerald-400 hover:text-emerald-800 dark:hover:bg-slate-700 transition-all active:scale-95 shadow-xs"
             >
               {token.text}
             </button>
@@ -156,7 +156,7 @@ export const SentenceBuilder: React.FC<SentenceBuilderProps> = ({
         <button
           disabled={selectedTokens.length === 0}
           onClick={handleCheck}
-          className="w-full py-3 bg-emerald-600 disabled:opacity-40 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md shadow-emerald-600/30 transition-all"
+          className="w-full py-2.5 sm:py-3 bg-emerald-600 disabled:opacity-40 hover:bg-emerald-700 text-white font-bold text-sm sm:text-base rounded-xl shadow-md shadow-emerald-600/30 transition-all active:scale-[0.99]"
         >
           Check Sentence
         </button>
